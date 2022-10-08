@@ -57,3 +57,10 @@ class OrderDetail(models.Model):
     quantity = models.IntegerField()
     discount = models.DecimalField(max_digits=3, decimal_places=1)
 
+
+class Receipt(models.Model):
+    created_date = models.DateTimeField(auto_now_add=True)
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+
+
+
