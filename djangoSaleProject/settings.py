@@ -106,6 +106,10 @@ DATABASES = {
             'HOST': '' # mặc định localhost
     }
 }
+
+import pymysql
+pymysql.install_as_MySQLdb()
+
 AUTH_USER_MODEL = 'saleapp.User'
 
 

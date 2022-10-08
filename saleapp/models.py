@@ -1,5 +1,15 @@
+from enum import  Enum
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+
+class StatusEnum(Enum):
+    ToReceive='ToReceive'
+    Completed='Completed'
+
+    @classmethod
+    def choices(cls):
+        return tuple((i.name, i.value) for i in cls)
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -12,6 +22,7 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.user.username
+
 
 
 class ModelBase(models.Model):
@@ -37,6 +48,7 @@ class Order(models.Model):
     ship_address = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=50,choices=StatusEnum.choices())
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -44,3 +56,4 @@ class OrderDetail(models.Model):
     unit_price = models.FloatField()
     quantity = models.IntegerField()
     discount = models.DecimalField(max_digits=3, decimal_places=1)
+
