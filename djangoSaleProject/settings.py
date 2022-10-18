@@ -102,7 +102,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'saledb',
             'USER': 'root',
-            'PASSWORD': '12345678',
+            'PASSWORD': 'root',
             'HOST': '' # mặc định localhost
     }
 }
