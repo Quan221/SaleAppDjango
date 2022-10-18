@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django.http import HttpResponse
 from django.http import HttpResponseForbidden
-from .models import User, Order
+from .models import User, Order, Customer
 from .serializers import UserSerializers, OrderSerializers
+
 
 
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
@@ -29,5 +30,24 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
 
 class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = Order.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrderSerializers
+
+    def create(self, request, *args, **kwargs):
+
+
+        #---Custom the customer field = request.user when send request---#
+
+        request.data._mutable = True
+        request.data['customer'] = Customer.objects.get(user=request.user).id
+        request.data._mutable = False
+        print(request.data)
+
+        serializer = self.get_serializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
