@@ -6,27 +6,25 @@ from rest_framework.parsers import MultiPartParser
 from django.http import HttpResponse
 from django.http import HttpResponseForbidden
 from .models import User, Order, Customer
-from .serializers import UserSerializers, OrderSerializers
-
+from .serializers import UserSerializers, OrderSerializers, ProductSerializers
 
 
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     queryset = User.objects.filter(is_active=True)
     serializer_class = UserSerializers
-    parser_classes = [MultiPartParser,]
+    parser_classes = [MultiPartParser, ]
+
     def get_permissions(self):
         if self.action == 'current_user':
             return [permissions.IsAuthenticated()]
 
         return [permissions.AllowAny()]
 
-
-
-
     @action(methods=['get'], url_path="current-user", detail=False)
     def current_user(self, request):
         return Response(self.serializer_class(request.user, context={'request': request}).data,
                         status=status.HTTP_200_OK)
+
 
 class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = Order.objects.all()
@@ -34,7 +32,6 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
     serializer_class = OrderSerializers
 
     def create(self, request, *args, **kwargs):
-
 
         #---Custom the customer field = request.user when send request---#
 
@@ -51,3 +48,6 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+class ProductViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView):
+    queryset = Order.objects.all()
+    serializer_class = ProductSerializers
