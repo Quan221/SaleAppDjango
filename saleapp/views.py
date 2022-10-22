@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django.http import HttpResponse
 from django.http import HttpResponseForbidden
-from .models import User, Order, Customer
+from .models import User, Order, Customer, Product
 from .serializers import UserSerializers, OrderSerializers, ProductSerializers
 
 
@@ -49,5 +49,5 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
 
 
 class ProductViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView):
-    queryset = Order.objects.all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializers

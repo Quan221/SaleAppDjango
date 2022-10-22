@@ -3,7 +3,6 @@ from .models import User, Customer, Order, OrderDetail, Product
 from rest_framework.fields import CurrentUserDefault
 
 
-
 class UserSerializers(serializers.ModelSerializer):
     avatar_path = serializers.SerializerMethodField()
 
@@ -14,19 +13,17 @@ class UserSerializers(serializers.ModelSerializer):
 
             return request.build_absolute_uri(path)
 
-
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name',
                   'username', 'password', 'email',
-                  'avatar','avatar_path','role']
+                  'avatar', 'avatar_path', 'role']
         extra_kwargs = {
             'password': {
                 'write_only': True
-            },' avatar_path': {
-                'read_only':True
-             , 'avatar': {
-                    'write_only':True
+            }, ' avatar_path': {
+                'read_only': True, 'avatar': {
+                    'write_only': True
                 }
             }
         }
@@ -40,22 +37,23 @@ class UserSerializers(serializers.ModelSerializer):
         customer.save()
         return user
 
+
 class ProductSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
 
+
 class OrderDetailSerializers(serializers.ModelSerializer):
     product = ProductSerializers()
     sum = serializers.SerializerMethodField('get_price')
+
     def get_price(self, obj):
         return obj.quantity*obj.product.price
 
-
     class Meta:
-        model=OrderDetail
-        fields = ['product','quantity','sum']
-
+        model = OrderDetail
+        fields = ['product', 'quantity', 'sum']
 
 
 class OrderSerializers(serializers.ModelSerializer):
@@ -63,12 +61,4 @@ class OrderSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id','customer','ship_address', 'item']
-
-
-
-
-
-
-
-
+        fields = ['id', 'customer', 'ship_address', 'item']
