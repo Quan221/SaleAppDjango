@@ -81,6 +81,10 @@ class Order(models.Model):
     ship_address = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    status = models.CharField(
+        max_length=30, choices=StatusEnum.choices(), default=StatusEnum.ToReceive.value)
+    payment_method = models.CharField(
+        max_length=30, choices=PayMentMethod.choices(), default=PayMentMethod.COD.value)
 
     def __str__(self):
         return '''Đơn hàng thứ''' + ' ' + self.id.__str__()
@@ -95,14 +99,3 @@ class OrderDetail(models.Model):
 
     def __str__(self):
         return self.product.name + ' So luong: ' + str(self.quantity)
-
-
-class Receipt(models.Model):
-    created_date = models.DateTimeField(auto_now_add=True)
-    order = models.OneToOneField(Order, on_delete=models.CASCADE)
-    status = models.CharField(max_length=30, choices=StatusEnum.choices())
-    payment_method = models.CharField(
-        max_length=30, choices=PayMentMethod.choices())
-
-    def __str__(self):
-        return self.order

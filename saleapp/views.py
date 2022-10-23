@@ -3,10 +3,8 @@ from rest_framework import viewsets, generics, status, permissions, mixins
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-from django.http import HttpResponse
-from django.http import HttpResponseForbidden
-from .models import User, Order, Customer, Product
-from .serializers import UserSerializers, OrderSerializers, ProductSerializers
+from .models import User, Order, Customer, Product, OrderDetail
+from .serializers import UserSerializers, OrderSerializers, ProductSerializers, OrderDetailSerializers
 
 
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
@@ -26,7 +24,7 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
                         status=status.HTTP_200_OK)
 
 
-class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
+class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAPIView, generics.UpdateAPIView):
     queryset = Order.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrderSerializers
@@ -46,6 +44,11 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class OrderDetailViewSet(viewsets.ViewSet, generics.CreateAPIView):
+    queryset = OrderDetail.objects.all()
+    serializer_class = OrderDetailSerializers
 
 
 class ProductViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView):

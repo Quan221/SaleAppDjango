@@ -45,7 +45,7 @@ class ProductSerializers(serializers.ModelSerializer):
 
 
 class OrderDetailSerializers(serializers.ModelSerializer):
-    product = ProductSerializers()
+    # product = ProductSerializers()
     sum = serializers.SerializerMethodField('get_price')
 
     def get_price(self, obj):
@@ -53,7 +53,7 @@ class OrderDetailSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = OrderDetail
-        fields = ['product', 'quantity', 'sum']
+        fields = ['order', 'product', 'quantity', 'sum', 'discount']
 
 
 class OrderSerializers(serializers.ModelSerializer):
