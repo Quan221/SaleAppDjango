@@ -48,6 +48,7 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
 
 class OrderDetailViewSet(viewsets.ViewSet, generics.CreateAPIView):
     queryset = OrderDetail.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrderDetailSerializers
 
 
