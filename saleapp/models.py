@@ -77,7 +77,8 @@ class Product(ModelBase):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="orders")
     ship_address = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

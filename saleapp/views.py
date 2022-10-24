@@ -29,6 +29,16 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrderSerializers
 
+    @action(methods=['get'], detail=False, url_path='my-orders')
+    def get_orders(self, request):
+        orders = Customer.objects.get(user=request.user).orders
+
+        # lessons = self.get_object().lessons.filter(active=True)
+        # return Response(OrderSerializers.serializer_class(orders, context={'request': request}).data,
+        #                     status=status.HTTP_200_OK)
+        return Response(OrderSerializers(orders, many=True, context={"request": request}).data,
+                        status=status.HTTP_200_OK)
+
     def create(self, request, *args, **kwargs):
 
         #---Custom the customer field = request.user when send request---#
