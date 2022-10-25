@@ -46,6 +46,7 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class Shipper(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bank_account = models.CharField(max_length=20, default='', blank=True)
@@ -101,7 +102,8 @@ class Order(models.Model):
 class OrderDetail(models.Model):
     order = models.ForeignKey(
         Order, related_name='item', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     discount = models.DecimalField(max_digits=3, decimal_places=1)
 

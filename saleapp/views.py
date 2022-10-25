@@ -4,7 +4,7 @@ from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from .models import Shipper, User, Order, Customer, Product, OrderDetail
-from .serializers import ShipperSerializers, UserSerializers, OrderSerializers, ProductSerializers, OrderDetailSerializers
+from .serializers import CreateOrderDetailSerializers, ShipperSerializers, UserSerializers, OrderSerializers, ProductSerializers, OrderDetailSerializers
 
 
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
@@ -81,7 +81,7 @@ class OrderViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveAP
 class OrderDetailViewSet(viewsets.ViewSet, generics.CreateAPIView):
     queryset = OrderDetail.objects.all()
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = OrderDetailSerializers
+    serializer_class = CreateOrderDetailSerializers
 
 
 class ProductViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView):
