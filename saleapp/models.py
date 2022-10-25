@@ -46,6 +46,13 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.username
 
+class Shipper(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bank_account = models.CharField(max_length=20, default='', blank=True)
+
+    def __str__(self):
+        return self.user.username
+
 
 class ModelBase(models.Model):
     active = models.BooleanField(default=True)
