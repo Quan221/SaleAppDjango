@@ -1,4 +1,3 @@
-from django.forms import fields
 from rest_framework import serializers
 from .models import Category, Shipper, User, Customer, Order, OrderDetail, Product
 from rest_framework.fields import CurrentUserDefault
@@ -105,6 +104,16 @@ class CreateOrderDetailSerializers(serializers.ModelSerializer):
 
     def get_price(self, obj):
         return obj.quantity*obj.product.price
+
+    def create(self, validated_data):
+        data = validated_data.copy()
+        items = OrderDetail(**data)
+        print(items.product.price)
+        price = items.product.price
+        items.price = items.quantity*price
+        items.save()
+
+        return items
 
     class Meta:
         model = OrderDetail

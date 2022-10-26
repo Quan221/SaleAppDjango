@@ -5,7 +5,6 @@ from rest_framework import viewsets, generics, status, permissions, mixins
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-
 from saleapp.paginations import StandardResultsSetPagination
 from .models import Category, Shipper, User, Order, Customer, Product, OrderDetail
 from .serializers import CategorySerializers, CreateOrderDetailSerializers, ShipperSerializers, UserSerializers, OrderSerializers, ProductSerializers, OrderDetailSerializers
