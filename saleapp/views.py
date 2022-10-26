@@ -1,10 +1,14 @@
+from itertools import product
+from unicodedata import category
 from django.shortcuts import render
 from rest_framework import viewsets, generics, status, permissions, mixins
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-from .models import Shipper, User, Order, Customer, Product, OrderDetail
-from .serializers import CreateOrderDetailSerializers, ShipperSerializers, UserSerializers, OrderSerializers, ProductSerializers, OrderDetailSerializers
+
+from saleapp.paginations import StandardResultsSetPagination
+from .models import Category, Shipper, User, Order, Customer, Product, OrderDetail
+from .serializers import CategorySerializers, CreateOrderDetailSerializers, ShipperSerializers, UserSerializers, OrderSerializers, ProductSerializers, OrderDetailSerializers
 
 
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
@@ -33,6 +37,19 @@ class ShipperViewSet(viewsets.ViewSet, generics.CreateAPIView):
     def get_orders(self, request):
         orders = Order.objects.all()
         return Response(OrderSerializers(orders, many=True, context={"request": request}).data,
+                        status=status.HTTP_200_OK)
+
+
+class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializers
+
+    @action(methods=['get'], detail=True, url_path='products')
+    def get_products(self, request, pk):
+        category = self.get_object()
+        products = Product.objects.filter(category=category)
+
+        return Response(ProductSerializers(products, many=True, context={"request": request}).data,
                         status=status.HTTP_200_OK)
 
 
@@ -87,3 +104,4 @@ class OrderDetailViewSet(viewsets.ViewSet, generics.CreateAPIView):
 class ProductViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
+    pagination_class = StandardResultsSetPagination

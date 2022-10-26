@@ -1,5 +1,6 @@
+from django.forms import fields
 from rest_framework import serializers
-from .models import Shipper, User, Customer, Order, OrderDetail, Product
+from .models import Category, Shipper, User, Customer, Order, OrderDetail, Product
 from rest_framework.fields import CurrentUserDefault
 
 
@@ -77,6 +78,13 @@ class ShipperSerializers(serializers.ModelSerializer):
 class ProductSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
+        fields = '__all__'
+
+
+class CategorySerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
         fields = '__all__'
 
 
