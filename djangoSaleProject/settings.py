@@ -103,9 +103,9 @@ WSGI_APPLICATION = 'djangoSaleProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'saledb',
+        'NAME': 'saledb3',
         'USER': 'root',
-        'PASSWORD': '12345678',
+        'PASSWORD': '123456',
         'HOST': ''  # mặc định localhost
     }
 }
